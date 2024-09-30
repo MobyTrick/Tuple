@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+:root {
+    /* Colors picked from coolors.io */
+    --red: #bf1a2f;
+    --violet: #f00699;
+    --blue: #454e9e;
+    --green: #018e42;
+    --yellow: #f7d002;
+    --grey:  #333333;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    color: var(--grey)
+}
+
+.tuple-header {
+    margin:0;
+    text-align: center;
+}
+
+.tuple-start-box {
+    z-index: 2;
+    width: 100%;
+    background-color: var(--blue);
+}
+
+.tuple-mode-container {
+    display: flex;
+}
