@@ -47,7 +47,11 @@ const TupleGrid = ({ word}) => {
 
     const renderRows = (_: unknown, i: number): any => <TupleRow rowIndex={i} word={word} />
 
-    return Array.from({ length: word.length + 1 }).map(renderRows)
+    const rows = Array.from({ length: word.length + 1 }).map(renderRows)
+
+    return <div className='tuple-grid'>
+        {rows}
+    </div>
 }
 
 export default () => {

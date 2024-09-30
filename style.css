@@ -17,6 +17,13 @@ body {
     color: var(--grey)
 }
 
+.application {
+    background-color: #018e42;
+    border: 1px solid black;
+    width: 70%;
+    margin: 0 auto;
+}
+
 .tuple-header {
     margin:0;
     text-align: center;
