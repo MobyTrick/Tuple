@@ -39,7 +39,7 @@ const eightLetterDictionary = [
     "informed", "jealousy", "landmark", "motivate", "negative", "oriented", "pipeline", "rational"
 ];
 
-export const dictionary = {
+export default {
     5: fiveLetterDictionary,
     6: sixLetterDictionary,
     7: sevenLetterDictionary,

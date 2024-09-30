@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import './style.css'
+import dictionary from './dictionary'
 
-const TupleStartBox = ({ setGame }) => {
-    // can be classic or hard
-    const [mode, setMode] = useState('classic')
-    const [rowSize, setRowSize] = useState(5)
+const TupleStartBox = ({ setMode, mode, setRows }) => {
 
     return <div className='tuple-start-box'>
         <div className='tuple-mode-row'>
@@ -16,7 +14,7 @@ const TupleStartBox = ({ setGame }) => {
         </button> 
         </div>
         <div className='tuple-mode-row'>
-        <input onChange={e => console.log(e)} min="5" max="8" type="range"/>
+        <input onChange={e => setRows(e)} min="5" max="8" type="range"/>
         </div>
         <div className='tuple-mode-row'>
         <button onClick={() => setMode('hard')}>
@@ -48,11 +46,18 @@ const TupleHeader = () => {
 }
 
 export default () => {
+    // can be classic or hard
+    const [mode, setMode] = useState('classic')
+    const [rows, setRows] = useState(5)
+    const [word, setWord] = useState(null)
 
+    const setGame = () => {
+
+    }
 
     return <div className="application">
         <TupleHeader />
-        <TupleStartBox />
+        <TupleStartBox mode={mode} setMode={setMode} rows={rows} setRows={setRows} />
         <TupleBody />
     </div>
 }
