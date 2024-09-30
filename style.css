@@ -28,6 +28,7 @@ body {
     background-color: var(--blue);
 }
 
-.tuple-mode-container {
+.tuple-row {
     display: flex;
+    flex-direction: row;
 }
