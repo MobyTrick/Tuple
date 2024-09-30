@@ -8,7 +8,7 @@ const isAlphabetCharacter = (keyName) =>  { return /^[a-zA-Z]+$/.test(keyName) &
 const deleteCharacter = (word) => {
     const newWord = word.split('')
     newWord.pop()
-    return newWord
+    return newWord.join('')
 }
 
 const TupleSettingsBox = ({ onClick, wordSize, setMode, setWordSize }) => {
@@ -46,18 +46,23 @@ const TupleRow = ({ setActiveRow, activeRow, word, rowIndex,  setCorrect  }:any)
     const [guess, setGuess] = useState('')
 
     useKey((event) => {
+
+
         if(activeRow !== rowIndex) return false
         if(event.key === 'Enter' && guess.length === word.length ){
             setActiveRow(activeRow + 1)
         }
 
-        if(event.key === 'Delete'){
+        if(event.key === 'Backspace'){
             let newGuess = deleteCharacter(guess)
+            console.log("The guess", newGuess)
             setGuess(newGuess)
         } else if(isAlphabetCharacter(event.key)){
             let newGuess = guess + event.key.toUpperCase()
         console.log(newGuess, "e0e0e0e0e")
+        if(guess.length < word.length){
             setGuess(newGuess)
+        }
         }
 
         return true
