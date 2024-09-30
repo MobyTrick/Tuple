@@ -31,19 +31,30 @@ const TupleSettingsBox = ({ onClick, wordSize, setMode, setWordSize }) => {
     </div>
 }
 
-const TupleBlock = ({word, letter, index, guess}: {word: string, letter: string, index: number, key?:string, guess:any}) => {
+const TupleBlock = ({done, word, letter, index, guess}: {word: string, letter: string, index: number, key?:string, guess:any}) => {
+    const guessedLetter = guess[index]
+    const positionAndLetter = guessedLetter === letter
+
+    let showGreenLetter = 'white'
+    if(positionAndLetter && done){
+        showGreenLetter = 'green'
+    } else if(done && word.includes(guessedLetter)){
+        showGreenLetter = 'yellow' 
+    }
     return <div style={{
+        backgroundColor: showGreenLetter,
         width: '60px',
         height: '60px',
         margin: '1px',
         border: '3px solid #018e42'
     }}>
-        { guess[index] }
+        {guessedLetter  }
     </div>
 }
 
 const TupleRow = ({ setActiveRow, activeRow, word, rowIndex,  setCorrect  }:any) => {
     const [guess, setGuess] = useState('')
+    const [done, setDone] = useState(false)
 
     useKey((event) => {
 
@@ -51,6 +62,7 @@ const TupleRow = ({ setActiveRow, activeRow, word, rowIndex,  setCorrect  }:any)
         if(activeRow !== rowIndex) return false
         if(event.key === 'Enter' && guess.length === word.length ){
             setActiveRow(activeRow + 1)
+            setDone(true)
         }
 
         if(event.key === 'Backspace'){
@@ -58,17 +70,16 @@ const TupleRow = ({ setActiveRow, activeRow, word, rowIndex,  setCorrect  }:any)
             console.log("The guess", newGuess)
             setGuess(newGuess)
         } else if(isAlphabetCharacter(event.key)){
-            let newGuess = guess + event.key.toUpperCase()
-        console.log(newGuess, "e0e0e0e0e")
-        if(guess.length < word.length){
-            setGuess(newGuess)
-        }
+            let newGuess = guess + event.key.toLowerCase()
+            if(guess.length < word.length){
+                setGuess(newGuess)
+            }
         }
 
         return true
     })
 
-    const renderBlock: React.FC = (a, i) => <TupleBlock index={i} activeRow={activeRow} key={`key-${rowIndex}-${i}-${a}`} word={word} letter={a} guess={guess} />
+    const renderBlock: React.FC = (a, i) => <TupleBlock done={done} index={i} activeRow={activeRow} key={`key-${rowIndex}-${i}-${a}`} word={word} letter={a} guess={guess} />
     const columns = word.split('').map(renderBlock)
 
     return <div className='tuple-row'>
