@@ -15,6 +15,7 @@ export default () => {
         const randomIndex = Math.random() * dict.length
         const newWord = dict[Math.floor(randomIndex)]
         setWord(newWord)
+        console.log("DEBUG INFO: ", newWord)
         setGameId(Math.random() + "_ID")
     }
 

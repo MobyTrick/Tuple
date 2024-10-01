@@ -7,7 +7,6 @@ export const TupleGrid = ({ word, resetGame, dictionary, mode }: any) => {
     const [activeRow, setActiveRow] = useState(0);
     const [correct, setCorrect] = useState([]);
 
-    console.log(word)
     if (!word) return <></>
 
     const setCorrectFn = (finalGuess) => {
