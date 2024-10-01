@@ -3,8 +3,22 @@ import './style.css'
 import dictionary from './dictionary'
 import { useKey } from 'react-use';
 
+function getBackgroundColor(guessedLetter: any, letter: string, done: any, word: string) {
+    const positionAndLetter = guessedLetter === letter;
+
+    let showGreenLetter = 'white';
+    if (positionAndLetter && done) {
+        showGreenLetter = 'green';
+    } else if (done && word.includes(guessedLetter)) {
+        showGreenLetter = 'yellow';
+    } else if (done) {
+        showGreenLetter = 'grey';
+    }
+    return showGreenLetter;
+}
 
 const isAlphabetCharacter = (keyName) =>  { return /^[a-zA-Z]+$/.test(keyName) && keyName.length === 1 }
+
 const deleteCharacter = (word) => {
     const newWord = word.split('')
     newWord.pop()
@@ -22,9 +36,7 @@ const TupleSettingsBox = ({ onClick, wordSize, setMode, setWordSize }) => {
         </button> 
         </div>
         <div className='tuple-mode-row'>
-        <input onChange={e => {
-                return setWordSize(e.target.value)
-            }} value={wordSize}  min="5" max="8" type="range"/>
+        <input onChange={e => setWordSize(e.target.value)} value={wordSize}  min="5" max="8" type="range"/>
             {wordSize}
         <button onClick={onClick}>Start</button>
         </div>
@@ -33,14 +45,8 @@ const TupleSettingsBox = ({ onClick, wordSize, setMode, setWordSize }) => {
 
 const TupleBlock = ({done, word, letter, index, guess}: {word: string, letter: string, index: number, key?:string, guess:any}) => {
     const guessedLetter = guess[index]
-    const positionAndLetter = guessedLetter === letter
+    const showGreenLetter = getBackgroundColor(guessedLetter, letter, done, word);
 
-    let showGreenLetter = 'white'
-    if(positionAndLetter && done){
-        showGreenLetter = 'green'
-    } else if(done && word.includes(guessedLetter)){
-        showGreenLetter = 'yellow' 
-    }
     return <div style={{
         backgroundColor: showGreenLetter,
         width: '60px',
@@ -48,26 +54,25 @@ const TupleBlock = ({done, word, letter, index, guess}: {word: string, letter: s
         margin: '1px',
         border: '3px solid #018e42'
     }}>
-        {guessedLetter  }
+        {guessedLetter}
     </div>
 }
 
-const TupleRow = ({ setActiveRow, activeRow, word, rowIndex,  setCorrect  }:any) => {
+const TupleRow = ({ setActiveRow, activeRow, word, rowIndex, dictionary, mode, setCorrect  }:any) => {
     const [guess, setGuess] = useState('')
     const [done, setDone] = useState(false)
 
     useKey((event) => {
-
-
         if(activeRow !== rowIndex) return false
+
         if(event.key === 'Enter' && guess.length === word.length ){
             setActiveRow(activeRow + 1)
             setDone(true)
+            setCorrect(guess)
         }
 
         if(event.key === 'Backspace'){
             let newGuess = deleteCharacter(guess)
-            console.log("The guess", newGuess)
             setGuess(newGuess)
         } else if(isAlphabetCharacter(event.key)){
             let newGuess = guess + event.key.toLowerCase()
@@ -87,7 +92,7 @@ const TupleRow = ({ setActiveRow, activeRow, word, rowIndex,  setCorrect  }:any)
     </div>
 }
 
-const TupleGrid = ({ word}) => {
+const TupleGrid = ({ word, resetGame, dictionary, mode, setGameId}:any) => {
 
     const [activeRow, setActiveRow] = useState(0)
     const [correct, setCorrect] = useState([])
@@ -95,34 +100,53 @@ const TupleGrid = ({ word}) => {
     if(!word) return 'unstarted';
 
     const setCorrectFn = (finalGuess) => {
-        console.log(finalGuess);
-        finalGuess.each(e => {
-            return console.log(e);
+        if(mode === 'hard'){
+            correct.forEach((letter) => {
+                if(!finalGuess.includes(letter)){
+                    alert("You Lost!")
+                    resetGame()
+                }
+            })
+
+        let guessedLetter = []
+        finalGuess.split('').forEach(e => {
+            if(word.includes(e) && !correct.includes(e) ){
+                guessedLetter.push(e)
+            }
+                
         });
 
+        setCorrect(guessedLetter)
+
+        }
     };
-    const renderRows = (_: unknown, i: number): any => <TupleRow setActiveRow={setActiveRow} activeRow={activeRow} rowIndex={i} setCorrect={setCorrectFn}  word={word} />
+    const renderRows = (_: unknown, i: number): any => <TupleRow dictionary={dictionary} setActiveRow={setActiveRow} activeRow={activeRow} rowIndex={i} setCorrect={setCorrectFn}  word={word} />
 
     const rows = Array.from({ length: word.length + 1 }).map(renderRows)
 
     return <div className='tuple-grid'>
+        {correct}
         {rows}
     </div>
 }
 
 export default () => {
-    // can be classic or hard
     const [mode, setMode] = useState('classic')
+    const [gameId, setGameId] = useState(null)
     const [wordSize, setWordSize] = useState('5')
     const [word, setWord] = useState(null)
-
-
+    const dict = dictionary[wordSize]
 
     const onClick = () => {
-        const dict = dictionary[wordSize]
         const randomIndex = Math.random() * dict.length
         const newWord = dict[Math.floor(randomIndex)]
         setWord(newWord)
+        setGameId(Math.random() + "_ID")
+    }
+
+    const resetGame = () => {
+        setGameId(null)
+        setWord(null)
     }
 
     return <div  style={{backgroundColor: mode === 'hard' ? 'blue' : 'white'}} className="application">
@@ -131,9 +155,10 @@ export default () => {
             onClick={onClick} 
             wordSize={wordSize} 
             setMode={setMode} 
-            setWordSize={setWordSize} />}
+            setWordSize={setWordSize}
+            />}
 
-            <TupleGrid word={word}/>
+            <TupleGrid resetGame={resetGame} key={gameId} dictionary={dict} word={word} mode={mode}/>
 
 
     </div>
