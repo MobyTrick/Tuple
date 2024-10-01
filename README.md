@@ -1,7 +1,10 @@
-# Installation Instructions
+# Installation and Instructions
 Make sure to have Node installed on your computer. Clone this repo, and then run `npm install && npm run start` and Tuple should pop up when done installing.
 
+NOTE: To make it easier for you to test and evaluate, I've console logged the solution word.
+
 # Strategies and Tradeoffs
+
 
 The basic flow is that the user sets their settings and presses start, at which point the app will set a solution word. The solution word is fed into TupleGrid. TupleGrid takes the word and adds N + 1 rows, and then feeds the word into TupleRow. TupleRow maps the word into blocks, feeding mapped letter into the block as well as the index for the correct guess letter. When the user types, the guess is set on the row and then fed into the block. The color logic for the blocks is handled purely in TupleBlock from the information fed in. 
 
@@ -12,6 +15,6 @@ The main game loop is in row. Here, I registered the key handler. The tradeoffs 
 The state is managed by composition. I think if there had even been one more level of state, or if TupleBlock had a useState hook, I might have just refactored it with context, but I think the traditional React way is fine in this case. 
 
 I did not use any libraries save for React-use for the useKey hook, mainly
-so I could quickly iterate on the business logic without writing a key handler. Other than that, I followed the example that authentic uses and kept everything as close to pure React and TypeScript as possible. 
+so I could quickly iterate on the business logic without writing a key handler. Other than that, I followed the example that authentic uses and kept everything as close to pure React and TypeScript as possible. I also pulled a lot of the pure typescript functions (I'm a big fan of functional programming) into a utils file so they can be easily tested if I decide to expand this game.
 
 Looking forward to speaking about the solution!
