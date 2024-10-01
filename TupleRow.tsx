@@ -20,7 +20,10 @@ export const TupleRow = ({
         if(activeRow !== rowIndex) return false
 
         const guessInDictionary = dictionary.includes(guess) 
-        if(event.key === 'Enter' && guess.length === word.length && guessInDictionary ){
+        if(event.key === 'Enter' && guess.length === word.length && !guessInDictionary){
+            alert("Guess not in dictionary!")
+            console.log(dictionary)
+        } else if(event.key === 'Enter' && guess.length === word.length && guessInDictionary ){
 
             setActiveRow(activeRow + 1)
             if(mode === 'hard'){
