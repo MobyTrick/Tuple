@@ -3,28 +3,31 @@ import { useKey } from 'react-use';
 import { deleteCharacter, isAlphabetCharacter } from './utils';
 import { TupleBlock } from './TupleBlock';
 
-export const TupleRow = ({ setActiveRow, activeRow, word, rowIndex, dictionary,  setCorrect, resetGame  }: React.FC) => {
+export const TupleRow = ({ setActiveRow, activeRow, mode, word, rowIndex, dictionary,  setCorrect, resetGame  }: React.FC) => {
     const [guess, setGuess] = useState('')
     const [done, setDone] = useState(false)
 
     useKey((event) => {
+        event.preventDefault()
         if(activeRow !== rowIndex) return false
 
         const guessInDictionary = dictionary.includes(guess) 
         if(event.key === 'Enter' && guess.length === word.length && guessInDictionary ){
 
             setActiveRow(activeRow + 1)
-            setDone(true)
+            if(mode === 'hard'){
+                setCorrect(guess)
+            }
             if(guess === word){
                 alert("You won!")
                 resetGame()
                 return true
-            } else if(activeRow === word.length - 1){
+            } else if(activeRow === word.length){
                 alert("You lost!")
                 resetGame()
                 return false
             }
-            setCorrect(guess)
+            setDone(true)
         }
 
         if(event.key === 'Backspace'){
@@ -32,7 +35,7 @@ export const TupleRow = ({ setActiveRow, activeRow, word, rowIndex, dictionary, 
             setGuess(newGuess)
         } else if(isAlphabetCharacter(event.key)){
             let newGuess = guess + event.key.toLowerCase()
-            if(guess.length < word.length){
+            if(guess.length <= word.length){
                 setGuess(newGuess)
             }
         }

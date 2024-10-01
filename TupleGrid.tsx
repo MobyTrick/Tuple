@@ -26,6 +26,7 @@ export const TupleGrid = ({ word, resetGame, dictionary, mode }: any) => {
         }
     };
     const renderRows = (_: unknown, i: number): React.FC => <TupleRow
+        mode={mode}
         key={`${word}-${i}}`}
         resetGame={resetGame}
         dictionary={dictionary}
