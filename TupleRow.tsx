@@ -3,7 +3,15 @@ import { useKey } from 'react-use';
 import { deleteCharacter, isAlphabetCharacter } from './utils';
 import { TupleBlock } from './TupleBlock';
 
-export const TupleRow = ({ setActiveRow, activeRow, mode, word, rowIndex, dictionary,  setCorrect, resetGame  }: React.FC) => {
+export const TupleRow = ({ 
+    setActiveRow, 
+    activeRow, 
+    mode, 
+    word, 
+    rowIndex, 
+    dictionary,  
+    setCorrect, 
+    resetGame  }: React.FC) => {
     const [guess, setGuess] = useState('')
     const [done, setDone] = useState(false)
 
