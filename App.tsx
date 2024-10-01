@@ -58,7 +58,7 @@ const TupleBlock = ({done, word, letter, index, guess}: {word: string, letter: s
     </div>
 }
 
-const TupleRow = ({ setActiveRow, activeRow, word, rowIndex, dictionary, mode, setCorrect  }:any) => {
+const TupleRow = ({ setActiveRow, activeRow, word, rowIndex, dictionary, mode, setCorrect, resetGame  }:any) => {
     const [guess, setGuess] = useState('')
     const [done, setDone] = useState(false)
 
@@ -66,6 +66,14 @@ const TupleRow = ({ setActiveRow, activeRow, word, rowIndex, dictionary, mode, s
         if(activeRow !== rowIndex) return false
 
         if(event.key === 'Enter' && guess.length === word.length ){
+            if(guess === word){
+                alert("You won!")
+                resetGame()
+            } else if(activeRow === word.length - 1){
+                alert("You lost!")
+                resetGame()
+            }
+
             setActiveRow(activeRow + 1)
             setDone(true)
             setCorrect(guess)
@@ -85,6 +93,7 @@ const TupleRow = ({ setActiveRow, activeRow, word, rowIndex, dictionary, mode, s
     })
 
     const renderBlock: React.FC = (a, i) => <TupleBlock done={done} index={i} activeRow={activeRow} key={`key-${rowIndex}-${i}-${a}`} word={word} letter={a} guess={guess} />
+
     const columns = word.split('').map(renderBlock)
 
     return <div className='tuple-row'>
@@ -120,7 +129,7 @@ const TupleGrid = ({ word, resetGame, dictionary, mode, setGameId}:any) => {
 
         }
     };
-    const renderRows = (_: unknown, i: number): any => <TupleRow dictionary={dictionary} setActiveRow={setActiveRow} activeRow={activeRow} rowIndex={i} setCorrect={setCorrectFn}  word={word} />
+    const renderRows = (_: unknown, i: number): any => <TupleRow resetGame={resetGame} dictionary={dictionary} setActiveRow={setActiveRow} activeRow={activeRow} rowIndex={i} setCorrect={setCorrectFn}  word={word} />
 
     const rows = Array.from({ length: word.length + 1 }).map(renderRows)
 
@@ -140,6 +149,7 @@ export default () => {
     const onClick = () => {
         const randomIndex = Math.random() * dict.length
         const newWord = dict[Math.floor(randomIndex)]
+        console.log(newWord)
         setWord(newWord)
         setGameId(Math.random() + "_ID")
     }

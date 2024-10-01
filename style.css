@@ -17,6 +17,12 @@ body {
     color: var(--grey)
 }
 
+button {
+    background-color: var(--yellow);
+    border-radius: 0;
+    border: 0;
+}
+
 .application {
     background-color: #018e42;
     border: 1px solid black;
