@@ -33,7 +33,7 @@ export const TupleRow = ({ setActiveRow, activeRow, mode, word, rowIndex, dictio
         if(event.key === 'Backspace'){
             let newGuess = deleteCharacter(guess)
             setGuess(newGuess)
-        } else if(isAlphabetCharacter(event.key)){
+        } else if(isAlphabetCharacter(event.key) && guess.length < word.length){
             let newGuess = guess + event.key.toLowerCase()
             if(guess.length <= word.length){
                 setGuess(newGuess)
