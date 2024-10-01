@@ -6,6 +6,7 @@
     --violet: #f00699;
     --blue: #454e9e;
     --green: #018e42;
+    --light-green:#69c898;
     --yellow: #f7d002;
     --grey:  #333333;
 }
@@ -14,20 +15,30 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Nunito', sans-serif;
-    color: var(--grey)
+    color: var(--grey);
+
 }
 
 button {
+    margin-right: 10px;
     background-color: var(--yellow);
-    border-radius: 0;
-    border: 0;
+    border-radius: 20px;
+}
+
+.start-button {
+    border:none;
+
 }
 
 .application {
-    background-color: #018e42;
-    border: 1px solid black;
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
+}
+
+.tuple-mode-row {
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
 }
 
 .tuple-header {
@@ -38,10 +49,37 @@ button {
 .tuple-start-box {
     z-index: 2;
     width: 100%;
-    background-color: var(--blue);
+    border: 1px solid var(--blue);
+    background-color: var(--light-green);
+    border-radius: 1em;
 }
 
 .tuple-row {
+    text-transform: capitalize;
     display: flex;
     flex-direction: row;
+}
+
+.tuple-block {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    
+    width: 60px;
+    height: 60px;
+    margin: 1px;
+    border: 3px solid black;
+}
+
+.tuple-grid-container {
+    margin:1em;
+    display: flex;
+    justify-content: center;
+}
+
+.word-range {
+    background-color: #cccccc;
+    padding: 5px;
+    border-radius: 20px;
 }
